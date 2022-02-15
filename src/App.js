@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 
 import TodoList from "./components/TodoList";
 
-class App extends Component {
-  constructor(props) {
+const App = () => {
+  /*  constructor(props) {
     super(props);
 
     this.state = {
@@ -15,65 +15,84 @@ class App extends Component {
     this._onClickAdd = this._onClickAdd.bind(this);
     this._onEnterPressAdd = this._onEnterPressAdd.bind(this);
     this._onCompleteTodo = this._onCompleteTodo.bind(this);
-  }
+  } */
 
-  componentDidMount() {
-    const todos = localStorage.getItem("et-todos");
+  let [title, setTitle] = useState({
+    id: "",
+    titulo: "",
+    complete: false,
+  });
 
+  let [todos, setTodos] = useState([]);
+  let [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    todos = localStorage.getItem("et-todos");
     if (!todos) {
       return;
     }
 
-    this.setState({
-      todos: JSON.parse(todos),
-    });
-  }
+    setTodos(JSON.parse(todos));
+  }, []);
 
-  componentDidUpdate() {
-    localStorage.setItem("et-todos", JSON.stringify(this.state.todos));
-  }
+  // componentDidUpdate() {
+  //   localStorage.setItem("et-todos", JSON.stringify(this.state.todos));
+  // }
 
-  _onCompleteTodo(id) {
-    const { todos } = this.state;
+  const _onCompleteTodo = (item) => {
+    // const { todos } = this.state;
 
-    todos[id].complete = !todos[id].complete;
+    let nuevosTodos = [];
+    let index = todos.indexOf(item);
 
-    this.setState({
-      todos,
-    });
-  }
+    nuevosTodos.push(...todos);
+    // console.log("nuevosTodos[id].complete", nuevosTodos[id].complete);
+    nuevosTodos[index].complete = !nuevosTodos[index].complete;
+    // console.log("nuevosTodos[id].complete", nuevosTodos[id].complete);
+    setTodos(nuevosTodos);
+  };
 
-  _onChangeTitle(event) {
+  const _onChangeTitle = (event) => {
     const target = event.target;
     const value = target.value;
+    setTitle({ titulo: value });
+  };
 
-    this.setState({
-      title: value,
-    });
-  }
-
-  _onEnterPressAdd(event) {
+  const _onEnterPressAdd = (event) => {
     if (13 === event.keyCode) {
-      this._onClickAdd();
+      _onClickAdd();
     }
-  }
+  };
 
-  _onClickAdd(event) {
-    const { title, todos } = this.state;
-
-    todos.push({
-      title,
-      compete: false,
+  const _onClickAdd = (event) => {
+    setCounter(counter + 1);
+    const nuevosTodos = [];
+    nuevosTodos.push(...todos);
+    nuevosTodos.push({
+      id: counter,
+      titulo: title.titulo,
+      complete: false,
     });
+    setTitle({ titulo: "" });
 
-    this.setState({
-      title: "",
-      todos,
-    });
-  }
+    setTodos(nuevosTodos);
 
-  _renderHeader() {
-    const { title } = this.state;
+    // this.setState({
+    //   title: "",
+    //   todos,
+    // });
+  };
+
+  //*********************************
+  const _onDeleteTodo = (id) => {
+    const newTodos = todos.filter((t) => t.id !== id);
+
+    setTodos(newTodos);
+  };
+  //*********************************
+
+  const _renderHeader = () => {
+    // const { title } = this.state;
 
     return (
       <div className="todos-app-header card-header">
@@ -84,15 +103,15 @@ class App extends Component {
             name="title"
             placeholder="What do you need to do?"
             className="form-control add-new-todo"
-            onChange={this._onChangeTitle}
-            onKeyDown={this._onEnterPressAdd}
-            value={title}
+            onChange={_onChangeTitle}
+            onKeyDown={_onEnterPressAdd}
+            value={title.titulo}
           />
           <div className="input-group-append">
             <button
               className="btn btn-success"
               type="button"
-              onClick={this._onClickAdd}
+              onClick={_onClickAdd}
             >
               <span
                 className=""
@@ -108,30 +127,27 @@ class App extends Component {
         </div>
       </div>
     );
-  }
+  };
 
-  render() {
-    const { todos } = this.state;
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col col-md-6 offset-md-3 mt-2">
+          <div className="todos-app card">
+            {_renderHeader()}
 
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="col col-md-6 offset-md-3 mt-2">
-            <div className="todos-app card">
-              {this._renderHeader()}
-              <div className="card-body">
-                <TodoList
-                  todos={todos}
-                  onComplete={this._onCompleteTodo}
-                  onDelete={this._onDeleteTodo}
-                />
-              </div>
+            <div className="card-body">
+              <TodoList
+                todos={todos}
+                onCompleteTodo={_onCompleteTodo}
+                onDeleteTodo={_onDeleteTodo}
+              />
             </div>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;

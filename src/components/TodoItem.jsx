@@ -1,9 +1,8 @@
 import React from "react";
 
-class TodoItem extends React.Component {
+/* class TodoItem extends React.Component {
   constructor(props) {
     super(props);
-
     this._onCompleteCheck = this._onCompleteCheck.bind(this);
   }
 
@@ -31,28 +30,57 @@ class TodoItem extends React.Component {
         />
       </div>
     );
-  }
+  } */
 
-  _renderTitle() {
-    const { title } = this.props;
+const TodoItem = (props) => {
+  // this._onCompleteCheck = this._onCompleteCheck.bind(this);
+  // const onCompleteCheck = () => {
+  // //data has many inputs.name === each data property name, replace the one sent dynamicay by name atribute
+
+  // };
+
+  /*   const onCompleteCheck = (event) => {
+    const { id, onComplete } = props.title;
+    onComplete(id);
+  }; */ console.log("TodoItem", props.item);
+
+  const _renderCheckbox = () => {
+    const { complete } = props.item;
+    const attrs = {};
+
+    if (complete) {
+      attrs.checked = "checked";
+    }
 
     return (
-      <div className="col-10 todo-item__title">
-        <h3>{title}</h3>
+      <div className="col-2 todo-item__checkbox">
+        <input
+          type="checkbox"
+          className="form-control"
+          onChange={() => props.onCompleteTodo(props.item)}
+          {...attrs}
+        />
       </div>
     );
-  }
+  };
 
-  render() {
-    return (
-      <li className="list-group-item todo-item">
-        <div className="row">
-          {this._renderCheckbox()}
-          {this._renderTitle()}
+  return (
+    <li className="list-group-item todo-item">
+      <div className="row">
+        {_renderCheckbox()}
+        <div className="col-10 todo-item__title">
+          <h3>
+            {props.item.id}. {props.item.titulo}
+          </h3>
+          <p>{props.item.complete ? "complete" : "not-complete"}</p>
+          <p></p>
+          <button onClick={() => props.onDeleteTodo(props.item.id)}>
+            Delete
+          </button>
         </div>
-      </li>
-    );
-  }
-}
+      </div>
+    </li>
+  );
+};
 
 export default TodoItem;
