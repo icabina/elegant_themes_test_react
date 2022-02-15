@@ -20,7 +20,7 @@ const App = () => {
   let [title, setTitle] = useState({
     id: "",
     titulo: "",
-    complete: false,
+    complete: "",
   });
 
   let [todos, setTodos] = useState([]);
@@ -40,8 +40,6 @@ const App = () => {
   // }
 
   const _onCompleteTodo = (item) => {
-    // const { todos } = this.state;
-
     let nuevosTodos = [];
     let index = todos.indexOf(item);
 

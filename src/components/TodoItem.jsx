@@ -42,7 +42,7 @@ const TodoItem = (props) => {
   /*   const onCompleteCheck = (event) => {
     const { id, onComplete } = props.title;
     onComplete(id);
-  }; */ console.log("TodoItem", props.item);
+  }; */
 
   const _renderCheckbox = () => {
     const { complete } = props.item;
@@ -50,6 +50,8 @@ const TodoItem = (props) => {
 
     if (complete) {
       attrs.checked = "checked";
+    } else {
+      attrs.checked = "";
     }
 
     return (
@@ -57,7 +59,10 @@ const TodoItem = (props) => {
         <input
           type="checkbox"
           className="form-control"
-          onChange={() => props.onCompleteTodo(props.item)}
+          onChange={() => {
+            // alert("hey");
+            props.onCompleteTodo(props.item);
+          }}
           {...attrs}
         />
       </div>
@@ -73,8 +78,11 @@ const TodoItem = (props) => {
             {props.item.id}. {props.item.titulo}
           </h3>
           <p>{props.item.complete ? "complete" : "not-complete"}</p>
-          <p></p>
-          <button onClick={() => props.onDeleteTodo(props.item.id)}>
+
+          <button
+            onClick={() => props.onDeleteTodo(props.item.id)}
+            className="deleteBtn"
+          >
             Delete
           </button>
         </div>

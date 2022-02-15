@@ -12,6 +12,7 @@ const TodoList = (props) => {
           item={item}
           onCompleteTodo={props.onCompleteTodo}
           onDeleteTodo={props.onDeleteTodo}
+          value={item.complete}
         />
       ))}
     </ul>
