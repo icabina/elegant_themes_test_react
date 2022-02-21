@@ -93,7 +93,7 @@ const App = () => {
     // const { title } = this.state;
 
     return (
-      <div className="todos-app-header card-header">
+      <div className="todos-app-header card-header" data-testid="ap">
         <h2>ToDo</h2>
         <div className="input-group">
           <input
@@ -101,6 +101,7 @@ const App = () => {
             name="title"
             placeholder="What do you need to do?"
             className="form-control add-new-todo"
+            data-testid="add-new-todo"
             onChange={_onChangeTitle}
             onKeyDown={_onEnterPressAdd}
             value={title.titulo}

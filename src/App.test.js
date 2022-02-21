@@ -1,3 +1,5 @@
+import React from "react";
+import "@testing-library/jest-dom";
 import {
   render,
   screen,
@@ -6,53 +8,58 @@ import {
   queryByTestId,
   cleanup,
   waitForElementToBeRemoved,
+  getByRole,
 } from "@testing-library/react";
+
+import { jest } from "@jest/globals";
+
 import App from "./App";
 
 afterEach(cleanup);
 //===================
 test("renders todo app", () => {
   render(<App />);
-  const title = screen.getByText(/ToDo/i);
+  const title = screen.getByText(/ToDo/i); // capitals or  not
   expect(title).toBeInTheDocument();
 });
 //===================
 
 test("adds new todos", () => {
-  const { container } = render(<App />);
+  render(<App />);
 
   const todoText = "say hello to the world";
   fireEvent.change(screen.getByPlaceholderText(/What do you need to do\?/i), {
     target: { value: todoText },
   });
-
-  expect(container.querySelector(".add-new-todo").value).toContain(todoText);
+  // container.firstChild.className
+  expect(screen.getByTestId("add-new-todo").value).toContain(todoText);
 
   fireEvent.click(screen.getByText(/\+/i));
+  //after a click in the screen
 
-  expect(container.querySelector(".todo-list").textContent).toContain(todoText);
-  expect(container.querySelector(".add-new-todo").value).not.toContain(
-    todoText
-  );
+  expect(screen.getByTestId("todo-list")).toBeInTheDocument();
+
+  expect(
+    screen.queryByTestId(document.documentElement, "does-not-exist")
+  ).not.toBeInTheDocument();
+
+  expect(screen.getByTestId("todo-list").textContent).toContain(todoText);
+
+  expect(screen.getByTestId("add-new-todo").value).not.toContain(todoText);
 });
 
 //===================
 test("deletes todos", () => {
-  const { container } = render(<App />);
+  render(<App />);
   const todoText = "say hello to the world";
   fireEvent.change(screen.getByPlaceholderText(/What do you need to do\?/i), {
     target: { value: todoText },
   });
 
-  expect(container.querySelector(".add-new-todo").value).toContain(todoText);
+  expect(screen.getByTestId("add-new-todo").value).toContain(todoText);
 
   fireEvent.click(screen.getByText(/\+/i));
-  // expect(container.querySelector(".todo-list").textContent).toContain(todoText);
-  // expect(container.querySelector(".add-new-todo").value).not.toContain(
-  //   todoText
-  // );
+
   fireEvent.click(screen.getByText(/Delete/i));
-  expect(container.querySelector(".todo-list").textContent).not.toContain(
-    todoText
-  );
+  expect(screen.getByTestId("todo-list").textContent).not.toContain(todoText);
 });
