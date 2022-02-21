@@ -1,5 +1,4 @@
 module.exports = {
-  setupFilesAfterEnv: ["<rootDir>/jest-setup.js"],
   testEnvironment: "jsdom",
   preset: "ts-jest",
   transform: {
@@ -9,3 +8,5 @@ module.exports = {
       "<rootDir>/fileTransformer.js",
   },
 };
+
+//setupFilesAfterEnv: ["<rootDir>/jest-setup.js"],
