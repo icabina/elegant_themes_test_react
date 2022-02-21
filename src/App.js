@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import TodoList from "./components/TodoList";
+import Tester from "./components/Tester";
 
 const App = () => {
   /*  constructor(props) {
@@ -127,6 +128,7 @@ const App = () => {
       </div>
     );
   };
+  //*********************************
 
   return (
     <div className="container">
@@ -141,6 +143,7 @@ const App = () => {
                 onCompleteTodo={_onCompleteTodo}
                 onDeleteTodo={_onDeleteTodo}
               />
+              <Tester />
             </div>
           </div>
         </div>
