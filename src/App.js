@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import TodoList from "./components/TodoList";
-import Tester from "./components/Tester";
+//import ContactList from "./components/ContactList.test";
 
 const App = () => {
   /*  constructor(props) {
@@ -143,7 +143,7 @@ const App = () => {
                 onCompleteTodo={_onCompleteTodo}
                 onDeleteTodo={_onDeleteTodo}
               />
-              <Tester />
+              {/* <ContactList /> */}
             </div>
           </div>
         </div>
