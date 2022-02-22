@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
+import useSWR from "swr"; //stale-while-revalidate
+
+//code for requests, anything that returns a promise
 
 import TodoList from "./components/TodoList";
 //import ContactList from "./components/ContactList.test";
+import { convert } from "./components/Currency";
 
 const App = () => {
   /*  constructor(props) {
@@ -129,7 +133,20 @@ const App = () => {
     );
   };
   //*********************************
+  //
+  //
+  //
+  //===============================
+  const [base, destination] = ["USD", "CAD"];
+  const { data: rate, error } = useSWR([base, destination], convert);
 
+  if (error) console.log(<span>Error!</span>);
+  if (!rate) console.log(<span>Loding!</span>);
+  //
+  //
+  //
+  //
+  //===============================
   return (
     <div className="container">
       <div className="row">
@@ -144,6 +161,9 @@ const App = () => {
                 onDeleteTodo={_onDeleteTodo}
               />
               {/* <ContactList /> */}
+              <div>
+                {base} to {destination} = {rate}
+              </div>
             </div>
           </div>
         </div>

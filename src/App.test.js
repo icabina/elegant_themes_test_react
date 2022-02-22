@@ -12,7 +12,10 @@ import {
 } from "@testing-library/react";
 
 import { jest } from "@jest/globals";
+//*****************************
+import { rest, server } from "./testServer";
 
+//*****************************
 import App from "./App";
 
 afterEach(cleanup);
@@ -62,4 +65,10 @@ test("deletes todos", () => {
 
   fireEvent.click(screen.getByText(/Delete/i));
   expect(screen.getByTestId("todo-list").textContent).not.toContain(todoText);
+});
+//===================
+test("renders Convert operation", async () => {
+  const { findByText } = render(<App />);
+  const element = await screen.findByText(/USD to CAD = 1.42/i);
+  expect(element).toBeInTheDocument();
 });
